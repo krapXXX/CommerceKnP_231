@@ -1,0 +1,10 @@
+.products-container .product-card{
+width:24%
+}
+.products-container
+{
+    display: flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content: space-between;
+}

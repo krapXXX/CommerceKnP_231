@@ -1,0 +1,42 @@
+.product-card
+{
+    background-color: #1d1d1d;
+position:relative;
+padding: 20px 10px 10px 10px;
+}
+.product-card-discount
+{
+    position:absolute;
+    left:10px;
+    top:10px;
+}
+.product-card a{
+    text-decoration: none;
+    color: inherit;
+}
+.product-card img
+{
+    width:90%;
+}
+
+.product-card-imgs
+{
+     flex:1;
+display:flex;
+justify-content: center;
+align-items: center;
+}
+
+.product-card-rating, .product-card p
+{
+    
+    text-align: center;
+}
+.product-card-footer
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+
+}

@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #0C0C0C;
+    color:#c0c0c0;
+}
+
+main {
+    flex: 1;
+    margin:5em;
+
+}
+
+header, footer {
+    color:#c0c0c0;
+    background-color: #0C0C0C;
+}
+
+.nav-link i{
+    font-size:1.75em;
+    margin-right: 0.25em;
+}
+
+.nav-item
+{
+    min-width: 130px;
+}
+.nav-search
+{
+    background-color: #1d1d1d;
+}
+.navbar-brand
+{
+    color:snow;
+}
