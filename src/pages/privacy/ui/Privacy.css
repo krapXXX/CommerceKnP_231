@@ -1,0 +1,14 @@
+.toaster{
+    position: fixed;
+    bottom: 2em;
+    right: 10em;
+    width: 20em;
+}
+.toast-text{
+    background-color: #333;
+    border-radius: 10px;
+    color: #eee;
+    padding: 7px 15px;
+    text-align: center;
+
+}

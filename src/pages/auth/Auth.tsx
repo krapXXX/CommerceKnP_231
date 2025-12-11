@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import SiteButton from '../../features/buttons/SiteButton';
 import ButtonTypes from '../../features/buttons/types/ButtonTypes';
 import UserDao from '../../entities/user/api/UserDao';
-import { AppContext } from '../../features/AppContext';
+import { AppContext } from '../../features/app_context/AppContext';
 
 export default function Auth() {
 

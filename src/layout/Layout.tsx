@@ -3,7 +3,7 @@ import './ui/Layout.css'
 import Label from "../features/label/Label";
 import LabelTypes from "../features/label/types/LabelTypes";
 import { useContext } from "react";
-import { AppContext } from "../features/AppContext";
+import { AppContext } from "../features/app_context/AppContext";
 
 export default function Layout() {
 
