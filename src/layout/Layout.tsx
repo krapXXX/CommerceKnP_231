@@ -7,8 +7,8 @@ import { AppContext } from "../features/app_context/AppContext";
 
 export default function Layout() {
 
-    const{user} = useContext(AppContext);
-const profileTitle = user == null? "Enter" :"Profile";
+    const { user, cart } = useContext(AppContext);
+    const profileTitle = user == null ? "Enter" : "Profile";
     return <>
         <header><nav className="navbar navbar-expand-lg border-bottom">
             <div className="container-fluid ">
@@ -21,7 +21,7 @@ const profileTitle = user == null? "Enter" :"Profile";
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <li className="nav-item">
-                           <Label title="Catalog" type={LabelTypes.Black} />
+                        <Label title="Catalog" type={LabelTypes.Black} />
                     </li>
 
                     <form className="d-flex flex-grow-1" role="search">
@@ -32,31 +32,31 @@ const profileTitle = user == null? "Enter" :"Profile";
 
                         <li className="nav-item">
                             <Link to="/" className="nav-link " title="Trade-In" aria-label="Trade-In" >
-                               <Label title="Trade In" />
+                                <Label title="Trade In" />
                             </Link>
                         </li>
 
                         <li className="nav-item">
                             <Link to="/privacy" className="nav-link"
                                 title="Repair" aria-label="Repair">
-                              <Label title="Repair" type={LabelTypes.Violet} />
+                                <Label title="Repair" type={LabelTypes.Violet} />
                             </Link>
                         </li>
 
                         <li className="nav-item">
                             <Link to="/auth" className="nav-link"
                                 title={profileTitle} aria-label={profileTitle}>
-                               <Label title = {profileTitle} type={LabelTypes.Blue} />
+                                <Label title={profileTitle} type={LabelTypes.Blue} />
                             </Link>
                         </li>
 
-                        <li className="nav-item">
-                            <Link to="/privacy" className="nav-link"
-                                title="Cart" aria-label="Cart">
-                               <Label title="Cart" type={LabelTypes.Grey} />
+    <li className="nav-item">
+    <Link to="/cart" className="nav-link"
+          title={["Cart", ...cart.items.map(item => item.product.name + ": " + item.cnt)].join('\n')}>
+        <Label title={"Cart " + cart.items.reduce((n, item) => n + item.cnt, 0)} type={LabelTypes.White} />
+    </Link>
+</li>
 
-                            </Link>
-                        </li>
                     </ul>
 
                 </div>

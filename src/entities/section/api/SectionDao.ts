@@ -129,7 +129,17 @@ export default class SectionDao {
                                 name: "Apple iPhone 17 Pro Max 256GB (Cosmic Orange)",
                                 price: 73499, discount: 6050, rating: 7,
                                 imageUrl: "/img/17.png", slug: "apple-iphone-17-pro-max-256gb-orange"
-                            }
+                            }, 
+                            {
+                               
+                                id: "2",
+                                name: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)",
+                                price: 11899, 
+                                discount: 2200, 
+                                rating: 5,
+                                imageUrl: "/img/airpods.png", slug: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)"
+                            },
+
                         ]
                     }); break;
                     default: reject('"Slug not found"');

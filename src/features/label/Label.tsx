@@ -7,7 +7,7 @@ export default function Label({ title, type,borderWidth }:
 const fillColor = type == LabelTypes.Violet ? "#8985C5"
                     : type == LabelTypes.Blue ? "#2681CE"
                     : type == LabelTypes.Black ? "#0C0C0C"
-                    : type == LabelTypes.Grey ? "#1d1d1d"
+                    : type == LabelTypes.White ? "white"
                     : "#00A397";
 
    return <div className="site-label">
@@ -17,6 +17,6 @@ const fillColor = type == LabelTypes.Violet ? "#8985C5"
                 stroke="white"
                 strokeWidth={borderWidth ?? "0"}></path>
         </svg>
-        <p style ={{color: type ==LabelTypes.Black||type ==LabelTypes.Grey ? "#d1d1d1":"#1d1d1d"}}>{title}</p>
+        <p style ={{color: type ==LabelTypes.Black ? "#d1d1d1":"#1d1d1d;"}}>{title}</p>
     </div>
 }

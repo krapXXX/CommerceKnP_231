@@ -5,9 +5,34 @@ import Label from "../../../features/label/Label";
 import LabelTypes from "../../../features/label/types/LabelTypes";
 import type { ProductType } from "../model/ProductType";
 import './ProductCard.css';
+import { AppContext } from "../../../features/app_context/AppContext";
+import { useContext } from "react";
 
 export default function ProductCard({ product }: { product: ProductType }) {
-    return <div className="product-card">
+   const {cart,setCart,showToast} = useContext (AppContext);
+ 
+const buyClick = () => {
+        price: cart.price + product.price
+   let newCart ={...cart,};
+   let item = newCart.items.find(i=>i.product.id == product.id);
+   if(item )
+   {
+item.cnt +=1;
+item.price += product.price;
+   }
+   else{
+newCart.items.push({
+     product: product,
+            price: product.price,
+            cnt: 1
+});
+   }
+    setCart(newCart);
+    showToast({message: product.name + " added to cart!"});
+};
+
+
+   return <div className="product-card">
         <Link to ={"/product/" +(product.slug ?? product.id)}>
         {product.discount && product.discount > 0 &&
             <div className='product-card-discount' >
@@ -22,7 +47,9 @@ export default function ProductCard({ product }: { product: ProductType }) {
         <p>{product.name}</p>
 </Link>
         <div className ='product-card-footer'>
-            <SiteButton buttonType={ButtonTypes.Red} text="Купити" />
+            <SiteButton buttonType={ButtonTypes.Red} 
+            text="Buy" 
+            action ={buyClick}/>
             <span>{product.price  + " ₴"}</span>
         </div>
     </div>

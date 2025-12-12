@@ -9,11 +9,13 @@ import { AppContext } from '../../features/app_context/AppContext';
 import { useEffect, useState } from 'react';
 import type { UserType } from '../../entities/user/model/UserType';
 import type ToastData from '../../features/app_context/ToastData';
-
-
+import type CartType from '../../entities/cart/model/CartType';
+import Cart from '../../pages/cart/Cart';
 
 export default function App() {
     const [user, setUser] = useState<UserType | null>(null);
+    const [cart, setCart] = useState<CartType>({ items: [], price: 0 });
+
     const [toastData, setToastData] = useState<ToastData | null>(null);
     const [toastQueue, setToastQueue] = useState<Array<ToastData>>([]);
 
@@ -38,12 +40,13 @@ export default function App() {
         }
     }, [toastQueue]);
 
-    return <AppContext.Provider value={{ user, setUser,showToast }}>
+    return <AppContext.Provider value={{ user, setUser,showToast,cart,setCart }}>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />} >
                     <Route index element={<Home />} />
                     <Route path='auth' element={<Auth />} />
+                    <Route path='cart' element={<Cart />} />
                     <Route path='privacy' element={<Privacy />} />
                     <Route path='product/:slug' element={<Product />} />
                     <Route path='section/:slug' element={<Section />} />
@@ -51,7 +54,7 @@ export default function App() {
             </Routes>
         </BrowserRouter>
         <div className="toaster">
-            {toastQueue.map(td => <div className="toast-text">
+            {toastQueue.map((td,i) => <div key ={i+td.message} className="toast-text">
                 {td.message}
             </div>)}
         </div>

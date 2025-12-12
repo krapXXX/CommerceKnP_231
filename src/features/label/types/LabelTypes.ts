@@ -4,6 +4,6 @@ enum LabelTypes
   Teal,
   Blue,
 Violet,
-Grey
+White
 }
 export default LabelTypes;
