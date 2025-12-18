@@ -127,18 +127,55 @@ export default class SectionDao {
                             {
                                 id: "1",
                                 name: "Apple iPhone 17 Pro Max 256GB (Cosmic Orange)",
-                                price: 73499, discount: 6050, rating: 7,
-                                imageUrl: "/img/17.png", slug: "apple-iphone-17-pro-max-256gb-orange"
+                                price: 73499, 
+                                discount: 6050,
+                                rating: 4,
+                                imageUrl: "/img/17.png", slug: "apple-iphone-17-pro-max-256gb-orange",
+                                stock:10,
                             }, 
                             {
-                               
                                 id: "2",
                                 name: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)",
                                 price: 11899, 
                                 discount: 2200, 
-                                rating: 5,
-                                imageUrl: "/img/airpods.png", slug: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)"
+                                rating: 4,
+                                imageUrl: "/img/airpods.png", slug: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)",
+                                stock:2,
                             },
+{
+                                id: "3",
+                                name: "Apple iPhone 17 Air 256GB (Space Black) (e-Sim)",
+                                price: 52599, 
+                                discount: 5100, 
+                                rating: 2.5,
+                                imageUrl: "/img/17Air.webp", slug: "Apple iPhone 17 Air 256GB ",
+                                stock:0,
+                            },{
+                                id: "4",
+                                name: "MacBook Air 13 Retina, Midnight, 256GB, 10 CPU / 8 GPU, 16GB RAM with Apple M4 (2025) (MW123)",
+                                price:41999 , 
+                                discount: 8000, 
+                                rating: 4.5,
+                                imageUrl: "/img/mac.webp", slug: "MacBook Air 13 Retina, Midnight",
+                                stock:15
+                            },
+                            {
+                                id: "5",
+                                name: "Apple iPad 11 128GB, Wi-Fi (Silver) (2025) (MD3Y4)",
+                                price: 17199, 
+                                discount: 1300, 
+                                rating: 3,
+                                imageUrl: "/img/ipad.webp", slug: "",
+                                stock:25
+                            },
+                            // {
+                            //     id: "",
+                            //     name: "",
+                            //     price: , 
+                            //     discount: , 
+                            //     rating: ,
+                            //     imageUrl: "/img/mac.webp", slug: ""
+                            // },
 
                         ]
                     }); break;

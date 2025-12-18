@@ -35,7 +35,19 @@ export default function Product() {
                      <div className="col col-7">
                 <h1>{pageData?.name}</h1>
                 <div>
-                    <div className="product-rating">★★★★★ ({pageData.rating})</div>
+                   <div className="product-rating">
+                {Array.from({ length: 5 }).map((_, i) => {
+                    if (i + 1 <= Math.floor( pageData.rating ?? 0)) {
+                        return <i key={i} className="bi bi-star-fill"></i>;
+                    }
+
+                    if (i <  (pageData.rating ?? 0)) {
+                        return <i key={i} className="bi bi-star-half"></i>;
+                    }
+
+                    return <i key={i} className="bi bi-star"></i>;
+                })}
+            </div>
                     {pageData.stock == 0
                         ? <div className="product-unavailable">Очікується</div>
                         : <div className="product-available">У наявності</div>}

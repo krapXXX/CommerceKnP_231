@@ -12,6 +12,17 @@ import type ToastData from '../../features/app_context/ToastData';
 import type CartType from '../../entities/cart/model/CartType';
 import Cart from '../../pages/cart/Cart';
 
+declare global {
+    interface Number {
+        toMoney: () => string;
+    }
+}
+
+Number.prototype.toMoney = function (): string {
+    return this.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+
 export default function App() {
     const [user, setUser] = useState<UserType | null>(null);
     const [cart, setCart] = useState<CartType>({ items: [], price: 0 });

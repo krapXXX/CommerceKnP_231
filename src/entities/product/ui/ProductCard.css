@@ -3,6 +3,19 @@
     background-color: #1d1d1d;
 position:relative;
 padding: 20px 10px 10px 10px;
+display:flex;
+flex-direction: column;
+justify-content: space-between;
+
+}
+.two-line-ellipsis {
+    display: -webkit-box;              /* Enables flexbox-like layout for text */
+    -webkit-box-orient: vertical;      /* Sets vertical orientation */
+    -webkit-line-clamp: 2;             /* Limit to 2 lines */
+    overflow: hidden;                  /* Hide overflowing text */
+    text-overflow: ellipsis;           /* Add "..." at the end */
+    line-height: 1.5em;                 /* Adjust line height */
+    max-height: 3em;                    /* line-height × number of lines */
 }
 .product-card-discount
 {
@@ -38,5 +51,4 @@ align-items: center;
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
-
 }
