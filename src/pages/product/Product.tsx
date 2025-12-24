@@ -1,10 +1,48 @@
 import { useParams } from "react-router-dom";
 import "./ui/Product.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ProductDao from "../../entities/product/api/ProductDao";
 import { AppContext } from "../../features/app_context/AppContext";
 import type ProductPageType from "../../entities/product/model/ProductPageType";
 import ProductCard from "../../entities/product/ui/ProductCard";
+
+function Recommended({ pageData }: { pageData: ProductPageType }) {
+    const scrollRightRef = useRef<HTMLDivElement>(null);
+
+    const scrollRightClick = () => {
+        scrollRightRef.current?.scrollBy(50, 0);
+    }; 
+    const scrollLeftClick = () => {
+        scrollRightRef.current?.scrollBy(-50, 0);
+    };
+
+    return <div className = "rec-box">
+        <div
+                className="scroll " style = {{left: "15px"}}
+                role="button"
+                onClick={scrollLeftClick}
+            >
+                &lt;
+            </div>
+        <div className="recommended-container" ref={scrollRightRef}>
+            <div className="recommended-row">
+                {pageData?.recommended.map(product => (
+                    <ProductCard product={product} key={product.id} />
+                ))}
+            </div>
+
+          
+        </div> 
+         <div
+               className="scroll " style = {{right: "15px"}}
+                role="button"
+                onClick={scrollRightClick}
+            >
+                &gt;
+            </div>
+        </div>
+}
+
 
 export default function Product() {
 const {isBusy, setBusy} = useContext(AppContext);
@@ -61,9 +99,7 @@ const {isBusy, setBusy} = useContext(AppContext);
             </div>
             </div>
 
-             <div className="products-container">
-        {pageData?.recommended.map(product => <ProductCard product ={product} key={product.id} />)}
-   </div>
+            <Recommended pageData={pageData}/>
             
             </div>
 

@@ -6,6 +6,7 @@ padding: 20px 10px 10px 10px;
 display:flex;
 flex-direction: column;
 justify-content: space-between;
+margin-right:8px;
 
 }
 .two-line-ellipsis {

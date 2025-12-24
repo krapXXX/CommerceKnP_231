@@ -16,7 +16,7 @@ function AuthForm() {
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isFormValid, setFormValid] = useState<boolean>(false);
-    const [remember, setRemember] = useState(true);
+    const [remember] = useState(true);
     useEffect(() => {
         setFormValid(login.length > 2 && password.length > 2)
     }, [login, password]);

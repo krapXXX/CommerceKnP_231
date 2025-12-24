@@ -117,7 +117,6 @@ export default class SectionDao {
 
     }
 
-
     static getSection(slug: string) {
         return new Promise<SectionType>((resolve, reject) => {
             setTimeout(() => {
@@ -165,17 +164,16 @@ export default class SectionDao {
                                 price: 17199, 
                                 discount: 1300, 
                                 rating: 3,
-                                imageUrl: "/img/ipad.webp", slug: "",
+                                imageUrl: "/img/ipad.webp", slug: "Apple iPad 11 128GB, Wi-Fi (Silver) (2025) (MD3Y4)",
                                 stock:25
                             },
-                            // {
-                            //     id: "",
-                            //     name: "",
-                            //     price: , 
-                            //     discount: , 
-                            //     rating: ,
-                            //     imageUrl: "/img/mac.webp", slug: ""
-                            // },
+                            { 
+    id: "6", name: "Apple iPhone 15 256GB (Pink)", 
+    slug: "apple-iphone-15-256gb--pink-",
+    price: 37999, discount: 2800, rating: 5,
+        imageUrl: "/img/pink15.webp",
+    stock: 0
+}
 
                         ]
                     }); break;

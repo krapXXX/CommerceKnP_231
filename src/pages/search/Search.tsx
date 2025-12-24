@@ -1,0 +1,34 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import type ISearchResult from "../../entities/search/model/ISearchResult";
+import SearchDao from "../../entities/search/api/SearchDao";
+
+export default function Search() {
+    const {slug}=useParams();
+    const search = decodeURIComponent(slug ??"")
+const [result,setResult]=useState<ISearchResult|null>(null)
+
+    useEffect(()=>{
+SearchDao.GetSearchResult(search)
+    .then(setResult);
+
+    },[slug])
+
+    return (
+        <>
+            <h1>Search for: </h1>
+            `{search}`
+            <br/>
+            <br/>
+            {result != null && <>
+            <i>Sections: </i>{result.sections.length ==0 
+            ? <b>No matches</b> 
+            :<b>Found a match</b> }
+            <br/>
+    <i>Items: </i>{result.products.length ==0 
+            ? <b>No matches</b> 
+            :<b>Found a match</b> }
+            </>}
+        </>
+    );
+}

@@ -1,15 +1,28 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import './ui/Layout.css'
 import Label from "../label/Label";
 import LabelTypes from "../label/types/LabelTypes";
 import { useContext } from "react";
+import type { FormEventHandler } from "react";
 import { AppContext } from "../app_context/AppContext";
 
 export default function Layout() {
-
     const { user, cart } = useContext(AppContext);
-    const profileTitle = user == null ? "Enter" : "Profile";
-    return <>
+    const profileTitle = user == null ? "Вхід" : "Кабінет";
+    const navigate = useNavigate();
+
+    const onSearch: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+       
+        const data =  (new FormData(e.target as HTMLFormElement).get("search")?.toString()??"");
+        console.log(data);
+        const slug = encodeURIComponent(data ?? "");
+        console.log(slug);
+        navigate(`/search/${slug}`);
+    };
+
+   
+   return <>
         <header><nav className="navbar navbar-expand-lg border-bottom">
             <div className="container-fluid ">
                 <Link to="/" className="navbar-brand" title="Home Page" aria-label="Home Page">
@@ -24,14 +37,14 @@ export default function Layout() {
                         <Label title="Catalog" type={LabelTypes.Black} />
                     </li>
 
-                    <form className="d-flex flex-grow-1" role="search">
-                        <input className="form-control me-2 nav-search" type="search" placeholder="Search" aria-label="Search" />
+                    <form onSubmit={onSearch} className="d-flex flex-grow-1" role="search">
+                        <input name = "search" className="form-control me-2 nav-search" type="search" placeholder="Search" aria-label="Search" />
                         <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <ul className="navbar-nav mb-2 mb-lg-0">
 
                         <li className="nav-item">
-                            <Link to="/" className="nav-link " title="Trade-In" aria-label="Trade-In" >
+                            <Link to="/trade-in" className="nav-link " title="Trade-In" aria-label="Trade-In" >
                                 <Label title="Trade In" />
                             </Link>
                         </li>

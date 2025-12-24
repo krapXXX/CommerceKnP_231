@@ -6,12 +6,10 @@ import LabelTypes from "../../../features/label/types/LabelTypes";
 import type { ProductType } from "../model/ProductType";
 import './ProductCard.css';
 import { AppContext } from "../../../features/app_context/AppContext";
-import { useContext, useState } from "react";
-import type { SectionType } from "../../section/model/SectionType";
+import { useContext } from "react";
 
 export default function ProductCard({ product }: { product: ProductType }) {
     const { cart, setCart, showToast, } = useContext(AppContext);
-    const [pageData] = useState<SectionType | null>(null);
    
     const navigate = useNavigate();
 
