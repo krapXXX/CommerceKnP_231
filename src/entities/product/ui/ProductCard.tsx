@@ -6,10 +6,13 @@ import LabelTypes from "../../../features/label/types/LabelTypes";
 import type { ProductType } from "../model/ProductType";
 import './ProductCard.css';
 import { AppContext } from "../../../features/app_context/AppContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import type { SectionType } from "../../section/model/SectionType";
 
 export default function ProductCard({ product }: { product: ProductType }) {
-    const { cart, setCart, showToast } = useContext(AppContext);
+    const { cart, setCart, showToast, } = useContext(AppContext);
+    const [pageData] = useState<SectionType | null>(null);
+   
     const navigate = useNavigate();
 
     const buyClick = () => {
@@ -92,5 +95,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                 );
             })()}
         </div>
-    </div>
+
+   
+   </div>
 }

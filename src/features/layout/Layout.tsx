@@ -1,9 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
 import './ui/Layout.css'
-import Label from "../features/label/Label";
-import LabelTypes from "../features/label/types/LabelTypes";
+import Label from "../label/Label";
+import LabelTypes from "../label/types/LabelTypes";
 import { useContext } from "react";
-import { AppContext } from "../features/app_context/AppContext";
+import { AppContext } from "../app_context/AppContext";
 
 export default function Layout() {
 

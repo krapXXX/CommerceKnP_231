@@ -11,35 +11,44 @@ export default function Auth() {
 }
 
 function AuthForm() {
-    const { setUser } = useContext(AppContext);
+    const { setUser, setBusy } = useContext(AppContext);
 
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isFormValid, setFormValid] = useState<boolean>(false);
-    const [isLoading, setLoading] = useState<boolean>(false);
+    const [remember, setRemember] = useState(true);
     useEffect(() => {
         setFormValid(login.length > 2 && password.length > 2)
     }, [login, password]);
 
 
+
     const onAuthClick = () => {
-        setLoading(true);
+        setBusy(true);
+
         UserDao
             .authenticate(login, password)
             .then(res => {
                 if (res == null) {
-                    alert("Unable to enter. Try again");
-                    setLoading(false);
-                }
-                else {
-                    setUser(res);
-                    setLoading(false);
+                    alert("Вхід відмовлено");
+                } else {
+                    // зберігаємо одержану інформацію у постійному сховищі
+                    if (remember) {
+                        window.localStorage.setItem(
+                            "user-231",
+                            JSON.stringify(res)
+                        );
+                    }
 
+                    // змінюємо стан застосунку
+                    setUser(res);
                 }
             })
-
-
+            .finally(() => {
+                setBusy(false);
+            });
     };
+
 
     return <>
         <h1 className="display-4 text-center">Authentification</h1>
@@ -59,13 +68,12 @@ function AuthForm() {
                         value={password} onChange={(e => setPassword(e.target.value))}
                         aria-label="Password" aria-describedby="password-addon" />
                 </div>
-                {
-                    isLoading
-                        ? <img src="/img/load.gif" width={24} />
-                        : <SiteButton text="Enter" action={onAuthClick}
-                            buttonType={isFormValid ? ButtonTypes.Red : ButtonTypes.White}
-                        />
-                }
+               
+                    <SiteButton
+                        text="Вхід"
+                        action={onAuthClick}
+                        buttonType={isFormValid ? ButtonTypes.Red : ButtonTypes.White}
+                    />
 
 
             </div>
@@ -74,7 +82,13 @@ function AuthForm() {
 }
 
 function Profile() {
+
     const { user, setUser } = useContext(AppContext);
+
+    const exitAuth = () => {
+        window.localStorage.removeItem("user-231");
+        setUser(null);
+    };
     return <>
         <h1 className="display-4 text-center">Profile page</h1>
         <div className="row">
@@ -86,7 +100,7 @@ function Profile() {
                 </div>
 
                 <h2 className="display-5 mb-4">{user?.name}</h2>
- <div className="row text-start">
+                <div className="row text-start">
                     <div className="col col-3 offset-2">Login</div>
                     <div className="col col-5">{user?.login}</div>
                     <div className="col col-1"><i className="bi bi-pencil"></i></div>
@@ -101,7 +115,7 @@ function Profile() {
                     <div className="col col-5">{user?.email}</div>
                     <div className="col col-1"><i className="bi bi-pencil"></i></div>
                 </div>
-                 <div className="row text-start">
+                <div className="row text-start">
                     <div className="col col-3 offset-2">Date of birth</div>
                     <div className="col col-5">{user?.dob}</div>
                     <div className="col col-1"><i className="bi bi-pencil"></i></div>
@@ -115,13 +129,15 @@ function Profile() {
                 <div className="row mt-5">
                     <div className="col col-4 offset-4">
                         <div className="row">
-
-                            <SiteButton text="Exit "
+                            <SiteButton
+                                text="Вихід"
                                 buttonType={ButtonTypes.Red}
-                                action={() => setUser(null)} />
+                                action={exitAuth}
+                            />
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

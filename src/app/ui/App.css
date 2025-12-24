@@ -1,0 +1,35 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #0C0C0C;
+    color:#c0c0c0;
+}
+.preloader
+{
+ background-color: #777777cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index:1;
+}
+
+.preloader-content
+{
+ background-color: #1d1d1d;
+    width: 25%;
+    min-width: 300px;
+    height: 25%;
+    min-height: 300px;
+}

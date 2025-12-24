@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../../pages/home/Home';
-import Layout from '../../layout/Layout';
+import Layout from '../../features/layout/Layout';
 import Privacy from '../../pages/privacy/Privacy';
 import Section from '../../pages/section/Section';
 import Product from '../../pages/product/Product';
@@ -11,6 +11,10 @@ import type { UserType } from '../../entities/user/model/UserType';
 import type ToastData from '../../features/app_context/ToastData';
 import type CartType from '../../entities/cart/model/CartType';
 import Cart from '../../pages/cart/Cart';
+import CartDao from '../../entities/cart/api/CartDao';
+import type ModalData from '../../features/modal/ModalData';
+import Modal from './modal/Modal';
+import "./App.css"
 
 declare global {
     interface Number {
@@ -24,12 +28,15 @@ Number.prototype.toMoney = function (): string {
 
 
 export default function App() {
+
     const [user, setUser] = useState<UserType | null>(null);
-    const [cart, setCart] = useState<CartType>({ items: [], price: 0 });
+    const [cart, setCart] = useState<CartType>(CartDao.restoreSaved());
+    useEffect(() => {
+        CartDao.save(cart);
+    }, [cart]);
 
     const [toastData, setToastData] = useState<ToastData | null>(null);
     const [toastQueue, setToastQueue] = useState<Array<ToastData>>([]);
-
     const dequeueToast = () => {
         setToastQueue(q => q.slice(0, q.length - 1));
     };
@@ -42,7 +49,6 @@ export default function App() {
             setToastData(null);
         }
         else {
-            // якщо останнє повідомлення не те, що показується, то перемикаємо на нього
             let lastToastData = toastQueue[toastQueue.length - 1];
             if (toastData != lastToastData) {
                 setToastData(lastToastData);
@@ -51,7 +57,36 @@ export default function App() {
         }
     }, [toastQueue]);
 
-    return <AppContext.Provider value={{ user, setUser,showToast,cart,setCart }}>
+    useEffect(() => {
+        // useEffect з порожнім масивом "спостереження"
+        // виконується одноразово коли елемент вбудовується у DOM
+        console.log("App started");
+
+        const savedUser = window.localStorage.getItem("user-231");
+        if (savedUser) {
+            try {
+                setUser(JSON.parse(savedUser))
+            }
+            catch (err) {
+                console.error("User restore error: ", err);
+            }
+
+        }
+
+        // повернена дія буде виконана при руйнуванні елемента (вилучення з DOM)
+        return () => {
+            console.log("App finished");
+        };
+    }, []);
+
+    const [modalData, setModalData] = useState<ModalData | null>(null);
+    const showModal = (data: ModalData) => {
+        setModalData(data);
+    }
+
+    const[isBusy, setBusy] = useState<boolean>(false);
+
+    return <AppContext.Provider value={{isBusy, setBusy, showModal, user, setUser, showToast, cart, setCart }}>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />} >
@@ -65,10 +100,18 @@ export default function App() {
             </Routes>
         </BrowserRouter>
         <div className="toaster">
-            {toastQueue.map((td,i) => <div key ={i+td.message} className="toast-text">
+            {toastQueue.map((td, i) => <div key={i + td.message} className="toast-text">
                 {td.message}
             </div>)}
         </div>
+        <Modal modalData={modalData} setModalData={setModalData} />
+    {isBusy &&
+    <div className = "preloader">
+        <div className = "preloader-content">
+
+        </div>
+    </div>}
+    
     </AppContext.Provider>
 }
 

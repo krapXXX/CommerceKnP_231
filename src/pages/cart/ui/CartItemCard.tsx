@@ -50,6 +50,15 @@ export default function CartItemCard({ cartItem }: { cartItem: CartItem }) {
             setCart(newCart);
     };
 
+const removeClick = () => {
+    if(confirm("You sure you want to delete that?")){
+    setCart ({
+        ...cart,
+        items: cart.items.filter(ci => ci.product.id !== cartItem.product.id),
+        price:cart.price-cartItem.price
+    });}
+};
+
     return <div className="row m-3 p-2 cart-item-card">
         <div className="col col-2">
             <img
@@ -76,6 +85,6 @@ export default function CartItemCard({ cartItem }: { cartItem: CartItem }) {
                     {(cartItem.price + (cartItem.product.discount ?? 0)*cartItem.cnt ).toMoney()} ₴</div>
             }
         </div>
-        <div className="col col-1"><i className="bi bi-trash"></i></div>
+        <div className="col col-1" onClick = {removeClick}><i className="bi bi-trash"></i></div>
     </div>;
 }
