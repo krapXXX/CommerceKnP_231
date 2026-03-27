@@ -72,10 +72,10 @@ const {isBusy, setBusy} = useContext(AppContext);
 
                 <div className="row">
                     <div className="col col-5">
-                        <img className="w-100" src={pageData?.product.imageUrl} alt={pageData?.product.name} />
+                        <img className="w-100" src={pageData?.product.imageUrl} alt={pageData?.product.title} />
                     </div>
                      <div className="col col-7">
-                <h1>{pageData?.product.name}</h1>
+                <h1>{pageData?.product.title}</h1>
                 <div>
                    <div className="product-rating">
                 {Array.from({ length: 5 }).map((_, i) => {

@@ -1,6 +1,6 @@
 type ProductType = {
     id: string,
-    name: string,
+    title: string,
     price: number,
     discount: number | null,
     imageUrl: string,

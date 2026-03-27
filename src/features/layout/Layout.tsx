@@ -65,7 +65,7 @@ export default function Layout() {
 
     <li className="nav-item">
     <Link to="/cart" className="nav-link"
-          title={["Cart", ...cart.items.map(item => item.product.name + ": " + item.cnt)].join('\n')}>
+          title={["Cart", ...cart.items.map(item => item.product.title + ": " + item.cnt)].join('\n')}>
         <Label title={"Cart " + cart.items.reduce((n, item) => n + item.cnt, 0)} type={LabelTypes.White} />
     </Link>
 </li>

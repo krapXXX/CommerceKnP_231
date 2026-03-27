@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
             });
         }
         setCart(newCart);
-        showToast({ message: product.name + " added to cart!" });
+        showToast({ message: product.title + " added to cart!" });
     };
 
 
@@ -41,7 +41,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                 </div>}
 
             <div className='product-card-imgs '>
-                <img src={product.imageUrl} alt={product.name} />
+                <img src={product.imageUrl} alt={product.title} />
             </div>
 
             <div className="product-card-rating">
@@ -60,7 +60,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
 
 
-            <p className="two-line-ellipsis">{product.name}</p>
+            <p className="two-line-ellipsis">{product.title}</p>
         </Link>
         <div className="product-card-footer">
             {(() => {

@@ -63,7 +63,7 @@ const removeClick = () => {
         <div className="col col-2">
             <img
                 src={cartItem.product.imageUrl}
-                alt={cartItem.product.name}
+                alt={cartItem.product.title}
                 className="w-100" />
             <div>
                 <button className="btn btn-outline-secondary me-2" onClick={decClick}>-</button>
@@ -73,7 +73,7 @@ const removeClick = () => {
             </div>
         </div>
         <div className="col col-6">
-            <h3>{cartItem.product.name}</h3>
+            <h3>{cartItem.product.title}</h3>
             <div>Гарантія 1 рік від {Math.round(cartItem.price * 0.1).toMoney()} грн</div>
             <div>Гарантія 2 роки від {Math.round(cartItem.price * 0.15).toMoney()} грн</div>
 
