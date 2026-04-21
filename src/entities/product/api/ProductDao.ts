@@ -56,8 +56,21 @@ const p6 = {
     stock: 0
 }
 export default class ProductDao {
-
-    static getProduct(slugOrId: string): Promise<ProductPageType> {
+static getProduct(slugOrId: string): Promise<ProductPageType> {
+    return new Promise((resolve, reject) => {
+        fetch("https://localhost:7015/api/product/" + slugOrId)
+            .then(r => r.json())
+            .then(j => {
+                if (j.meta.dataType == "object") {
+                    resolve(j.data);
+                }
+                else {
+                    reject(j);
+                }
+            });
+    });
+}
+    static getProductMock(slugOrId: string): Promise<ProductPageType> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 const allProducts = [p1, p2, p3, p4, p5,p6];

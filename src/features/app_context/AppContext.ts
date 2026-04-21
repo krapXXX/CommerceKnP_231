@@ -13,32 +13,33 @@ interface AppContextType {
 isBusy:boolean,
     cart: CartType,
     setCart: (input: CartType) => void,
+    request:(url:string, init?:RequestInit)=> Promise <Response>
 }
 
 
-const init:AppContextType = {
-    user:null,
-    isBusy:false,
+const init: AppContextType = {
+    user: null,
+    isBusy: false,
     setUser: (_) => {
-        throw "Not Implemented 'SetUser'"
-},
- showToast: (_) => {
-        throw "Not Implemented 'showToat'"
-},
-showModal: (_) => {
+        throw "Not Implemented 'setUser'";
+    },
+    showToast: (_) => {
+        throw "Not Implemented 'showToast'";
+    },
+    showModal: (_) => {
         throw "Not Implemented 'showModal'";
     },
-cart: { items: [], price: 0 },
-setCart: (_) => {
-    throw "Not Implemented 'setCart'";
-},
-setBusy:(_)=>
-{
-    throw "Not Implemented 'setBusy'";
-
-}
-
-}
+    cart: { items: [], price: 0 },
+    setCart: (_) => {
+        throw "Not Implemented 'setCart'";
+    },
+    setBusy: (_) => {
+        throw "Not Implemented 'setBusy'";
+    },
+    request: (_, __) => {
+        throw "Not Implemented 'request'";
+    }
+};
 
 const AppContext = createContext<AppContextType>(init);
 

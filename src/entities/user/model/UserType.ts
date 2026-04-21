@@ -4,7 +4,9 @@ type UserType = {
     login: string,
     imageUrl: string,
     address: string,
-    dob: string
+    dob: string,
+    token: string,
+    exp: number,
 };
 
 export type { UserType };
