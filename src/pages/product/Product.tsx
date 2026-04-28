@@ -45,11 +45,11 @@ function Recommended({ pageData }: { pageData: ProductPageType }) {
 
 
 export default function Product() {
-const {isBusy, setBusy} = useContext(AppContext);
+    const { isBusy, setBusy, user } = useContext(AppContext);
 
     const { slug } = useParams<string>();
     const [pageData, setPageData] = useState<ProductPageType | null>(null);
-
+    const [cartError, setCartError] = useState("");
     useEffect(() => {
         if (slug) {
             setBusy(true);
@@ -63,7 +63,17 @@ const {isBusy, setBusy} = useContext(AppContext);
                 .finally(()=>setBusy(false));
         }
     }, [slug]);
+const addToCartClick = () => {
+    if (!user) {
+        setCartError("Для створення замовлення необхідно увійти до системи");
+        return;
+    }
 
+    setCartError("");
+
+    // тут потім буде запит до бекенду для додавання в кошик
+    console.log("Add to cart:", pageData?.product.id);
+};
     return pageData == undefined ? <h1>Loading...</h1>
         : pageData == null && isBusy ? <h1>Not Found</h1>
             :
@@ -94,8 +104,26 @@ const {isBusy, setBusy} = useContext(AppContext);
                         ? <div className="product-unavailable">Очікується</div>
                         : <div className="product-available">У наявності</div>}
                 </div>
-                <div className="product-old-price">{pageData.product.price - (pageData.product.discount ?? 0)}</div>
-                <div className="product-new-price">{pageData.product.price}</div>
+<div className="product-old-price">
+    {pageData.product.price - (pageData.product.discount ?? 0)}
+</div>
+
+<div className="product-new-price">
+    {pageData.product.price}
+</div>
+
+<button 
+    className="btn btn-primary mt-3"
+    onClick={addToCartClick}
+>
+    До кошику
+</button>
+
+{cartError && (
+    <div className="product-cart-error">
+        {cartError}
+    </div>
+)}
             </div>
             </div>
 

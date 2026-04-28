@@ -7,6 +7,7 @@ import { AppContext } from '../../features/app_context/AppContext';
 export default function Auth() {
 
     const { user } = useContext(AppContext);
+    
     return user == null ? <AuthForm /> : <Profile />;
 }
 

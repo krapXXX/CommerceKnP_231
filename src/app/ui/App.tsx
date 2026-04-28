@@ -12,129 +12,149 @@ import Modal from './modal/Modal';
 
 declare global {
   interface Number {
-        toMoney: () => string;
+    toMoney: () => string;
   }
 }
 
-Number.prototype.toMoney = function() : string {
+Number.prototype.toMoney = function (): string {
   return this.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 export default function App() {
-  const [user, setUser] = useState<UserType|null>(null);
-
+  const [user, setUser] = useState<UserType | null>(null);
   const [cart, setCart] = useState<CartType>(CartDao.restoreSaved());
+  const [toastData, setToastData] = useState<ToastData | null>(null);
+  const [toastQueue, setToastQueue] = useState<Array<ToastData>>([]);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
+  const [isBusy, setBusy] = useState<boolean>(false);
+
+  const logoutByTokenError = () => {
+    window.localStorage.removeItem("user-231");
+    setUser(null);
+  };
+
   useEffect(() => {
     CartDao.save(cart);
   }, [cart]);
-  
-  const [toastData, setToastData] = useState<ToastData|null>(null);
-  const [toastQueue, setToastQueue] = useState<Array<ToastData>>([]);
 
   const dequeueToast = () => {
-      setToastQueue(q => q.slice(0, q.length - 1));
+    setToastQueue(q => q.slice(0, q.length - 1));
   };
 
   const showToast = (data: ToastData) => {
-      setToastQueue([data, ...toastQueue]);
+    setToastQueue(q => [data, ...q]);
   };
 
   useEffect(() => {
-      // console.log(toastQueue);
-      if(toastQueue.length == 0) {
-          setToastData(null);
-      }
-      else {
-          // якщо останнє повідомлення не те, що показується, то перемикаємо на нього
-          let lastToastData = toastQueue[toastQueue.length - 1];
-          if(toastData != lastToastData) {
-              setToastData(lastToastData);
-              setTimeout(dequeueToast, lastToastData.timeout ?? 2000);
-          }
-      }
-  }, [toastQueue]);
-
-  useEffect(() => {  // useEffect з порожнім масивом "спостереження"
-    // виконується одноразово коли елемент вбудовується у DOM
-    console.log("App started");
-    // на старті перевіряємо наявність у постійному сховищі збережених даних
-   const savedUser = window.localStorage.getItem("user-231");
-if(savedUser) {
-  try {
-    const parsedUser = JSON.parse(savedUser);
-
-    if (parsedUser.exp && parsedUser.exp > Date.now() * 10000) {
-      setUser(parsedUser);
+    if (toastQueue.length == 0) {
+      setToastData(null);
     }
     else {
-      window.localStorage.removeItem("user-231");
+      let lastToastData = toastQueue[toastQueue.length - 1];
+      if (toastData != lastToastData) {
+        setToastData(lastToastData);
+        setTimeout(dequeueToast, lastToastData.timeout ?? 2000);
+      }
     }
-  }
-  catch(err) {
-    console.error("User restore error: ", err);
-  }
-}
+  }, [toastQueue]);
 
-    // повернена дія буде виконана при руйнуванні елемента (вилучення з DOM)
+  useEffect(() => {
+    console.log("App started");
+
+    const savedUser = window.localStorage.getItem("user-231");
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+
+        if (parsedUser.exp && parsedUser.exp > Date.now() * 10000) {
+          setUser(parsedUser);
+        }
+        else {
+          window.localStorage.removeItem("user-231");
+        }
+      }
+      catch (err) {
+        console.error("User restore error: ", err);
+      }
+    }
+
     return () => {
       console.log("App finished");
     };
   }, []);
 
-
-
-  
-  const [modalData, setModalData] = useState<ModalData|null>(null);
-  const showModal = (data:ModalData) => {
+  const showModal = (data: ModalData) => {
     setModalData(data);
-  }
-  const [isBusy, setBusy] = useState<boolean>(false);
+  };
 
   const request = (url: string, init?: RequestInit) => {
     return new Promise<Response>((resolve, reject) => {
-      // реалізуємо свій формат api://... який буде адресуватись до бекенду
-      if(url.startsWith("api://")) {
-        url = url.replace("api://", Config.backendUrl+"/api/");
-        // перевіряємо стан авторизації та додаємо до запиту токен, якщо 
-        // він не встановлений ззовні
-        if(user) {
-          if(!init) {
-            init = {};
-          }
-          if(!init.headers) {
-            init.headers = {};
-          }
-          const headers = new Headers(init.headers);
-          if(!headers.has('authorization')) {
-            headers.append('authorization', 'Bearer ' + user.token);
-            init.headers = headers;
-          }
+      if (url.startsWith("api://")) {
+        url = url.replace("api://", Config.backendUrl + "/api/");
+      }
+
+      if (user) {
+        if (!init) {
+          init = {};
+        }
+        if (!init.headers) {
+          init.headers = {};
+        }
+
+        const headers = new Headers(init.headers);
+        if (!headers.has('authorization')) {
+          headers.append('authorization', 'Bearer ' + user.token);
+          init.headers = headers;
         }
       }
-      fetch(url, init).then(resolve).catch(reject);
+
+      fetch(url, init)
+        .then(async (response) => {
+          try {
+            const cloned = await response.clone().json();
+            const message = (cloned?.data || "").toString().toLowerCase();
+
+            const isTokenError =
+              response.status == 401 ||
+              cloned?.status == 401 ||
+              message.includes("token") ||
+              message.includes("jwt") ||
+              message.includes("bearer") ||
+              message.includes("signature") ||
+              message.includes("expired") ||
+              message.includes("authorization");
+
+            if (isTokenError && user) {
+              showToast({ message: "Сесію завершено: помилка або завершення дії токена" });
+              logoutByTokenError();
+            }
+          }
+          catch {
+          }
+
+          resolve(response);
+        })
+        .catch(reject);
     });
   };
 
-  return <AppContext.Provider value={{request, isBusy, setBusy, showModal, user, setUser, showToast, cart, setCart}}>
+  return <AppContext.Provider value={{ request, isBusy, setBusy, showModal, user, setUser, showToast, cart, setCart }}>
     <AppRouter />
 
     <div className="toaster">
-        {/* <div className="toast-text" style={{display: toastData ? "block" : "none"}}>
-            {toastData?.message}
-        </div> */}
-            {toastQueue.map((td, i) => <div key={i + td.message} className="toast-text">
-                {td.message}
-            </div>)}
+      {toastQueue.map((td, i) => <div key={i + td.message} className="toast-text">
+        {td.message}
+      </div>)}
     </div>
 
     <Modal modalData={modalData} setModalData={setModalData} />
-    {isBusy && 
-    <div className='preloader'>
-      <div className='preloader-content'>
-        
-      </div>
-    </div>}
+
+    {isBusy &&
+      <div className='preloader'>
+        <div className='preloader-content'>
+
+        </div>
+      </div>}
 
   </AppContext.Provider>;
 }
-

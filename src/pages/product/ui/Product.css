@@ -33,3 +33,8 @@
     border-radius: 15px;
     z-index: 5;
 }
+.product-cart-error {
+    margin-top: 8px;
+    color: #d32f2f;
+    font-size: 14px;
+}
