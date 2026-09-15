@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from '../../pages/home/Home';
+import Home from '../../pages/back/Back';
 import Layout from '../../features/layout/Layout';
 import Privacy from '../../pages/privacy/Privacy';
 import Section from '../../pages/section/Section';
@@ -16,6 +17,7 @@ export default function AppRouter() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="auth" element={<Auth />} />
+                    <Route path="back" element={<Back />} />
                     <Route path="cart" element={<Cart />} />
                     <Route path="privacy" element={<Privacy />} />
                     <Route path="product/:slug" element={<Product />} />

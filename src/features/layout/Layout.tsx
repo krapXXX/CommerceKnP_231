@@ -44,10 +44,10 @@ export default function Layout() {
                     <ul className="navbar-nav mb-2 mb-lg-0">
 
                         <li className="nav-item">
-                            <Link to="/trade-in" className="nav-link " title="Trade-In" aria-label="Trade-In" >
-                                <Label title="Trade In" />
+                            <Link to="/back" className="nav-link " title="Trade-In" aria-label="Trade-In" >
+                                <Label title="Back" />
                             </Link>
-                        </li>
+                        </li> 
 
                         <li className="nav-item">
                             <Link to="/privacy" className="nav-link"
