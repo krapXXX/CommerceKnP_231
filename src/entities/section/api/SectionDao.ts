@@ -1,12 +1,20 @@
 import type { HomePageSection } from "../../../features/section_card/types/section";
-import type { SectionType } from "../model/SectionType";
+import type IRestResponse from "../../_rest/model/IRestResponse";
+import type IProductSection from "../model/SectionType";
 
 export default class SectionDao {
+    static cacheSections:Array<HomePageSection>|undefined;
 
-    static cacheSections: Array<HomePageSection> | undefined;
+    static getSections(page:number=1, pageSize:number=4) {
+        return new Promise<IRestResponse>((resolve, _) => {
+            fetch(`http://localhost:8080/java231web/section?page=${page}&pageSize=${pageSize}`)
+            .then(r => r.json())
+            .then(resolve);
+        });
+    }
 
-    static getSections() {
-         return new Promise<Array<HomePageSection>>((resolve, _) => {
+    static getSectionsAsp() {
+        return new Promise<Array<HomePageSection>>((resolve, _) => {
             fetch("https://localhost:7015/api/sections")
             .then(r => r.json())
             .then(resolve);
@@ -15,118 +23,122 @@ export default class SectionDao {
 
     static getSectionsMock() {
         return new Promise<Array<HomePageSection>>((resolve, _) => {
-            if (typeof SectionDao.cacheSections != 'undefined') {
+            if(typeof SectionDao.cacheSections != 'undefined') {
                 resolve(SectionDao.cacheSections);
             }
-            else {
-                setTimeout(() => {
-                    SectionDao.cacheSections =
-                        [
+            else setTimeout(() => {
+                SectionDao.cacheSections = [
+        {
+            "imageUrl": "/img/wide-applefull.png.webp",
+            "title": "Apple",
+            "slug": "apple"
+        },
+        {
+            "imageUrl": "/img/big-center-airpods-2025full.png.webp",
+            "title": "AirPods",
+            "slug": "airpods"
+        },
+        {
+            "imageUrl": "/img/big-2025-iphonefull.png.webp",
+            "title": "iPhone",
+            "slug": "iphonefull"
+        },
+        {
+            "imageUrl": "/img/Frame-8full.png.webp",
+            "title": "б/у Apple",
+            "slug": "applebw"
+        },
+        {
+            "imageUrl": "/img/android-newfull.png.webp",
+            "title": "Смартфони",
+            "slug": "android"
+        },
+        {
+            "imageUrl": "/img/wide-dysonfull.png.webp",
+            "title": "Dyson",
+            "slug": "dysonfull"
+        },
+        {
+            "imageUrl" : "/img/wide-garminfull.png.webp",
+            "title": "garminfull",
+            "slug": "garminfull"
+        },
+        {
+            "imageUrl" : "/img/big-kitchenfull.png.webp",
+            "title": "kitchenfull",
+            "slug": "kitchenfull"
+        },
+        {
+            "imageUrl" : "/img/home-carefull.png.webp",
+            "title": "home-carefull",
+            "slug": "home-carefull"
+        },  
+        {
+            "imageUrl" : "/img/gaming-micefull.png.webp",
+            "title": "micefull",
+            "slug": "micefull"
+        },   
+        {
+            "imageUrl" : "/img/gaming-acsfull.png.webp",
+            "title": "acsfull",
+            "slug": ""
+        },     
+        {
+            "imageUrl" : "/img/headphonesfull.png.webp",
+            "title": "headphonesfull",
+            "slug": ""
+        },
+        {
+            "imageUrl": "/img/big-ps5full.png.webp",
+            "title": "Консоли",
+            "slug": ""
+        },
+        {
+            "imageUrl": "/img/image19full.png.webp",
+            "title": "Ноутбуки",
+            "slug": ""
 
-                            {
-                                "imageUrl": "/img/apple.webp",
-                                "title": "apple",
-                                "slug": "apple",
-                            },
-                            {
-                                "imageUrl": "/img/airpods.webp",
-                                "title": "airpods",
-                                "slug": "airpods",
+        },
+        {
+            "imageUrl": "/img/image24full.png.webp",
+            "title": "Телевизоры",
+            "slug": ""
 
-                            },
-                            {
-                                "imageUrl": "/img/iphone.webp",
-                                "title": "iphone",
-                                "slug": "iphone",
-                            },
-                            {
-                                "imageUrl": "/img/apple2hand.webp",
-                                "title": "apple2hand",
-                                "slug": "apple2hand",
-                            },
-                            {
-                                "imageUrl": "/img/android.webp",
-                                "title": "android",
-                                "slug": "android",
-                            },
-                            {
-                                "imageUrl": "/img/dyson.webp",
-                                "title": "dyson",
-                                "slug": "dyson",
-                            },
-                            {
-                                "imageUrl": "/img/gamingstation.png",
-                                "title": "gamingstation",
-                                "slug": "gamingstation",
-                            },
-                            {
-                                "imageUrl": "/img/laptop.png",
-                                "title": "laptop",
-                                "slug": "laptop",
-                            },
-                            {
-                                "imageUrl": "/img/display.png",
-                                "title": "display",
-                                "slug": "display",
-                            },
-                            {
-                                "imageUrl": "/img/camera.png",
-                                "title": "camera",
-                                "slug": "camera",
-                            },
-                            {
-                                "imageUrl": "/img/actioncamera.png",
-                                "title": "actioncamera",
-                                "slug": "actioncamera",
-                            },
-                            {
-                                "imageUrl": "/img/tv.png",
-                                "title": "tv",
-                                "slug": "tv",
-                            },
-                            {
-                                "imageUrl": "/img/combine.webp",
-                                "title": "combine",
-                                "slug": "combine",
-                            },
-                            {
-                                "imageUrl": "/img/headphones.webp",
-                                "title": "headphones",
-                                "slug": "headphones",
-                            },
-                            {
-                                "imageUrl": "/img/./joystick.webp",
-                                "title": "joystick",
-                                "slug": "joystick",
-                            },
-                            {
-                                "imageUrl": "/img/watches.webp",
-                                "title": "watches",
-                                "slug": "watches",
-                            },
-                            {
-                                "imageUrl": "/img/vacume.webp",
-                                "title": "vacume",
-                                "slug": "vacume",
-                            },
-                            {
-                                "imageUrl": "/img/keyboard.webp",
-                                "title": "keyboard",
-                                "slug": "keyboard",
-                            },
+        },
+        {
+            "imageUrl": "/img/wide-noutfull.png.webp",
+            "title": "Экшн камеры",
+            "slug": ""
 
-                        ];
+        },
+        {
+            "imageUrl": "/img/wide-photoofull.png.webp",
+            "title": "Фотоапараты",
+            "slug": ""
 
-                    resolve(SectionDao.cacheSections);
-                }, 300)
-            }
-        }
-        )
-
+        },
+        {
+            "imageUrl": "/img/image24full.png.webp",
+            "title": "Мониторы",
+            "slug": ""
+        },
+    ];
+                resolve(SectionDao.cacheSections);
+            }, 300);
+        });
     }
 
-    static getSection(slug: string) {
-            return new Promise<SectionType>((resolve, reject) => {
+    static getSection(slug:string) {
+        return new Promise<IProductSection>((resolve, reject) => {
+            fetch("http://localhost:8080/java231web/section/" + slug)
+            .then(r => r.json())
+            .then(j => resolve(j.data))
+            .catch(reject);
+        });
+    }
+
+    static getSectionASP(slug:string) {
+        return new Promise<IProductSection>((resolve, reject) => {
             fetch("https://localhost:7015/api/sections/" + slug)
             .then(r => r.json())
             .then(resolve)
@@ -135,63 +147,44 @@ export default class SectionDao {
     }
 
     static getSectionMock(slug:string) {
-        return new Promise<SectionType>((resolve, reject) => {
+        return new Promise<IProductSection>((resolve, reject) => {
             setTimeout(() => {
-                switch (slug) {
+                switch(slug) {
                     case 'apple': resolve({
                         products: [
-                            {
-                                id: "1",
-                                title: "Apple iPhone 17 Pro Max 256GB (Cosmic Orange)",
-                                price: 73499, 
-                                discount: 6050,
-                                rating: 4,
-                                imageUrl: "/img/17.png", slug: "apple-iphone-17-pro-max-256gb-orange",
-                                stock:10,
-                            }, 
-                            {
-                                id: "2",
-                                title: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)",
-                                price: 11899, 
-                                discount: 2200, 
-                                rating: 4,
-                                imageUrl: "/img/airpods.png", slug: "Навушники Apple AirPods Pro 3 (MFHP4)(2025)",
-                                stock:2,
-                            },
-{
-                                id: "3",
-                                title: "Apple iPhone 17 Air 256GB (Space Black) (e-Sim)",
-                                price: 52599, 
-                                discount: 5100, 
-                                rating: 2.5,
-                                imageUrl: "/img/17Air.webp", slug: "Apple iPhone 17 Air 256GB ",
-                                stock:0,
-                            },{
-                                id: "4",
-                                title: "MacBook Air 13 Retina, Midnight, 256GB, 10 CPU / 8 GPU, 16GB RAM with Apple M4 (2025) (MW123)",
-                                price:41999 , 
-                                discount: 8000, 
-                                rating: 4.5,
-                                imageUrl: "/img/mac.webp", slug: "MacBook Air 13 Retina, Midnight",
-                                stock:15
-                            },
-                            {
-                                id: "5",
-                                title: "Apple iPad 11 128GB, Wi-Fi (Silver) (2025) (MD3Y4)",
-                                price: 17199, 
-                                discount: 1300, 
-                                rating: 3,
-                                imageUrl: "/img/ipad.webp", slug: "Apple iPad 11 128GB, Wi-Fi (Silver) (2025) (MD3Y4)",
-                                stock:25
-                            },
+                            { id: "1", title: "Apple iPhone 17 Pro Max 256GB (Cosmic Orange)", 
+                                slug: "apple-iphone-17-pro-max-256gb-orange",
+                                price: 73499, discount: 6050, rating: 2, 
+                                imageUrl: "/img/CosmicOrange-1397x1397.png.webp"},
+                            { id: "2", title: "Навушники Apple AirPods Pro 3 (MFHP4) (2025)", 
+                                slug: "navushnyky-apple-airpods-pro-3",
+                                price: 11899, discount: 2200, rating: 4, 
+                                imageUrl: "/img/vbfbg-1397x1397.png.webp"},
                             { 
-    id: "6", title: "Apple iPhone 15 256GB (Pink)", 
-    slug: "apple-iphone-15-256gb--pink-",
-    price: 37999, discount: 2800, rating: 5,
-        imageUrl: "/img/pink15.webp",
-    stock: 0
-}
-
+                                id: "814897", title: "Apple iPhone 15 256GB (Pink)", 
+                                slug: "apple-iphone-15-256gb--pink-",
+                                price: 37999, discount: 2800, rating: 3, 
+                                imageUrl: "/img/pink (1)-1397x1397.jpeg.webp",
+                                stock: 0
+                            },
+                            { id: "842447", title: "MacBook Air 13 Retina, Midnight, 256GB, 10 CPU / 8 GPU, 16GB RAM with Apple M4 (2025) (MW123)", 
+                                slug: "macbook-air-13-retina-midnight-256gb-8-cpu--10-gpu-16gb-ram-with-apple-m4-2025-mw123",
+                                price: 41999, discount: 8000, rating: 1, 
+                                imageUrl: "/img/midnight-1-1397x1397.png.webp",
+                                stock: 10
+                            },
+                            { id: "855417", title: "Apple iPhone 17 Pro Max 512GB (Deep Blue)", 
+                                slug: "apple-iphone-17-pro-max-512gb-dark-blue",
+                                price: 83699, discount: 13050, rating: 3, 
+                                imageUrl: "/img/deepBlue-(4)-1397x1397.png.webp1",
+                                stock: 3
+                            },
+                            { id: "842247", title: "Apple iPad 11 128GB, Wi-Fi (Silver) (2025) (MD3Y4)", 
+                                slug: "apple-ipad-11-128gb-wi-fi-silver-2025-md3y4",
+                                price: 17199, discount: 1300, rating: 5, 
+                                imageUrl: "/img/ipad-2022-hero-silver-wifi-selec-1397x1397.jpg.webp",
+                                stock: 10
+                            },
                         ]
                     }); break;
                     default: reject('"Slug not found"');
@@ -199,5 +192,5 @@ export default class SectionDao {
             }, 300);
         });
     }
-
+ 
 }

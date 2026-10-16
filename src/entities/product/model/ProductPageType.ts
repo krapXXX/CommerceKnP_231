@@ -1,6 +1,6 @@
-import type { ProductType } from "./ProductType";
+import type IProduct from "./IProduct";
 
 export default interface ProductPageType {
-    product: ProductType;
-    recommended: Array<ProductType>;
+    product: IProduct,
+    recommended?: Array<IProduct>,
 }

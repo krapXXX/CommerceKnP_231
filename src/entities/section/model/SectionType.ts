@@ -1,7 +1,10 @@
-import type { ProductType } from "../../product/model/ProductType";
+import type { ProductType } from "../../product/model/IProduct";
 
-type SectionType = {
-products:Array<ProductType>
+export default interface IProductSection {
+    title?:       string,
+    description?: string,
+    slug?:        string,
+    imageUrl?:    string,
+    products:     Array<ProductType>,
+    children?:    Array<IProductSection>
 }
-
-export type{SectionType};

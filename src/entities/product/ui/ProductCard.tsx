@@ -3,7 +3,7 @@ import SiteButton from "../../../features/buttons/SiteButton";
 import ButtonTypes from "../../../features/buttons/types/ButtonTypes";
 import Label from "../../../features/label/Label";
 import LabelTypes from "../../../features/label/types/LabelTypes";
-import type { ProductType } from "../model/ProductType";
+import type { ProductType } from "../model/IProduct";
 import './ProductCard.css';
 import { AppContext } from "../../../features/app_context/AppContext";
 import { useContext } from "react";

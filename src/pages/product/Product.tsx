@@ -11,36 +11,47 @@ function Recommended({ pageData }: { pageData: ProductPageType }) {
 
     const scrollRightClick = () => {
         scrollRightRef.current?.scrollBy(50, 0);
-    }; 
+    };
+
     const scrollLeftClick = () => {
         scrollRightRef.current?.scrollBy(-50, 0);
     };
 
-    return <div className = "rec-box">
-        <div
-                className="scroll " style = {{left: "15px"}}
+    return (
+        <div className="rec-box">
+            <div
+                className="scroll"
+                style={{ left: "15px" }}
                 role="button"
                 onClick={scrollLeftClick}
             >
                 &lt;
             </div>
-        <div className="recommended-container" ref={scrollRightRef}>
-            <div className="recommended-row">
-                {pageData?.recommended.map(product => (
-                    <ProductCard product={product} key={product.id} />
-                ))}
+
+            <div
+                className="recommended-container"
+                ref={scrollRightRef}
+            >
+                <div className="recommended-row">
+                    {pageData.recommended.map(product => (
+                        <ProductCard
+                            product={product}
+                            key={product.id}
+                        />
+                    ))}
+                </div>
             </div>
 
-          
-        </div> 
-         <div
-               className="scroll " style = {{right: "15px"}}
+            <div
+                className="scroll"
+                style={{ right: "15px" }}
                 role="button"
                 onClick={scrollRightClick}
             >
                 &gt;
             </div>
         </div>
+    );
 }
 
 
@@ -48,87 +59,198 @@ export default function Product() {
     const { isBusy, setBusy, user } = useContext(AppContext);
 
     const { slug } = useParams<string>();
-    const [pageData, setPageData] = useState<ProductPageType | null>(null);
+
+    const [pageData, setPageData] =
+        useState<ProductPageType | null>(null);
+
     const [cartError, setCartError] = useState("");
-    useEffect(() => {
-        if (slug) {
-            setBusy(true);
-            ProductDao
-                .getProduct(slug)
-                .then(setPageData)
-                .catch(err => {
-                    setPageData(null);
-                    console.error(err);
-                })
-                .finally(()=>setBusy(false));
-        }
-    }, [slug]);
-const addToCartClick = () => {
-    if (!user) {
-        setCartError("Для створення замовлення необхідно увійти до системи");
-        return;
+
+useEffect(() => {
+    if (slug) {
+        ProductDao
+            .getProduct(slug)
+            .then(setPageData)
+            .catch(err => {
+                setPageData(null);
+                console.error(err);
+            });
     }
+}, [slug]);
 
-    setCartError("");
 
-    // тут потім буде запит до бекенду для додавання в кошик
-    console.log("Add to cart:", pageData?.product.id);
-};
-    return pageData == undefined ? <h1>Loading...</h1>
-        : pageData == null && isBusy ? <h1>Not Found</h1>
-            :
-            <div className="row">
-                <div className="row"></div>
+    const addToCartClick = (versionId: string) => {
+        if (!user) {
+            setCartError(
+                "Для створення замовлення необхідно увійти до системи"
+            );
+            return;
+        }
 
-                <div className="row">
+        setCartError("");
+
+        console.log(
+            "Add to cart:",
+            pageData?.product.id,
+            versionId
+        );
+    };
+
+if (isBusy) {
+    return <h1>Loading...</h1>;
+}
+
+if (pageData === null) {
+    return <h1>Not Found</h1>;
+}
+
+
+    return (
+        <div className="row">
+
+            <div className="row"></div>
+
+            {pageData.product.versions.map(pv => (
+
+                <div
+                    className="row mb-3"
+                    key={pv.id}
+                >
+
+                    {/* Фото версії товару */}
                     <div className="col col-5">
-                        <img className="w-100" src={pageData?.product.imageUrl} alt={pageData?.product.title} />
+
+                        <img
+                            className="w-100"
+                            src={pv.imageUrl}
+                            alt={
+                                pageData.product.title +
+                                " " +
+                                (pv.titleAddon ?? "")
+                            }
+                        />
+
                     </div>
-                     <div className="col col-7">
-                <h1>{pageData?.product.title}</h1>
-                <div>
-                   <div className="product-rating">
-                {Array.from({ length: 5 }).map((_, i) => {
-                    if (i + 1 <= Math.floor( pageData.product.rating ?? 0)) {
-                        return <i key={i} className="bi bi-star-fill"></i>;
-                    }
 
-                    if (i <  (pageData.product.rating ?? 0)) {
-                        return <i key={i} className="bi bi-star-half"></i>;
-                    }
 
-                    return <i key={i} className="bi bi-star"></i>;
-                })}
-            </div>
-                    {pageData.product.stock == 0
-                        ? <div className="product-unavailable">Очікується</div>
-                        : <div className="product-available">У наявності</div>}
+                    {/* Інформація про версію */}
+                    <div className="col col-7 product-info">
+
+                        <h1>
+                            {pageData.product.title}
+                            {" "}
+                            {pv.titleAddon}
+                        </h1>
+
+
+                        {/* Рейтинг */}
+                        <div>
+
+                            <div className="product-rating">
+
+                                {Array.from({ length: 5 }).map((_, i) => {
+
+                                    const rating =
+                                        pageData.product.rating ?? 0;
+
+                                    if (i + 1 <= Math.floor(rating)) {
+                                        return (
+                                            <i
+                                                key={i}
+                                                className="bi bi-star-fill"
+                                            ></i>
+                                        );
+                                    }
+
+                                    if (i < rating) {
+                                        return (
+                                            <i
+                                                key={i}
+                                                className="bi bi-star-half"
+                                            ></i>
+                                        );
+                                    }
+
+                                    return (
+                                        <i
+                                            key={i}
+                                            className="bi bi-star"
+                                        ></i>
+                                    );
+                                })}
+
+                            </div>
+
+
+                            {/* Наявність */}
+
+                            {pv.stock === 0
+                                ? (
+                                    <div className="product-unavailable">
+                                        Передзамовлення
+                                    </div>
+                                )
+                                : pv.stock !== undefined &&
+                                  pv.stock > 0 &&
+                                  pv.stock < 5
+                                    ? (
+                                        <div className="product-low-stock">
+                                            Залишилось мало
+                                        </div>
+                                    )
+                                    : (
+                                        <div className="product-available">
+                                            У наявності
+                                        </div>
+                                    )
+                            }
+
+                        </div>
+
+
+                        {/* Стара ціна */}
+                        <div className="product-old-price">
+
+                            {pv.price -
+                                (pageData.product.discount ?? 0)}
+
+                        </div>
+
+
+                        {/* Нова ціна */}
+                        <div className="product-new-price">
+
+                            {pv.price}
+
+                        </div>
+
+
+                        {/* Кнопка кошика */}
+                        <button
+                            className="btn btn-primary mt-3"
+                            onClick={() => addToCartClick(pv.id)}
+                        >
+                            До кошику
+                        </button>
+
+
+                        {/* Помилка */}
+                        {cartError && (
+
+                            <div className="product-cart-error">
+                                {cartError}
+                            </div>
+
+                        )}
+
+                    </div>
+
                 </div>
-<div className="product-old-price">
-    {pageData.product.price - (pageData.product.discount ?? 0)}
-</div>
 
-<div className="product-new-price">
-    {pageData.product.price}
-</div>
+            ))}
 
-<button 
-    className="btn btn-primary mt-3"
-    onClick={addToCartClick}
->
-    До кошику
-</button>
 
-{cartError && (
-    <div className="product-cart-error">
-        {cartError}
-    </div>
-)}
-            </div>
-            </div>
+            <Recommended pageData={pageData} />
 
-            <Recommended pageData={pageData}/>
-            
-            </div>
-
+        </div>
+    );
 }
