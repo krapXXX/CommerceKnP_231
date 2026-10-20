@@ -9,6 +9,7 @@ import Auth from '../../pages/auth/Auth';
 import Cart from "../../pages/cart/Cart";
 import NotFound from "../../pages/notfound/NotFound";
 import Search from "../../pages/search/Search";
+import BackNotFound from "../../pages/back/BackNotFound";
 
 export default function AppRouter() {
     return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
                     <Route index element={<Home />} />
                     <Route path="auth" element={<Auth />} />
                     <Route path="back" element={<Back />} />
+                     <Route path="back/*" element={<BackNotFound />} />
                     <Route path="cart" element={<Cart />} />
                     <Route path="privacy" element={<Privacy />} />
                     <Route path="product/:slug" element={<Product />} />
